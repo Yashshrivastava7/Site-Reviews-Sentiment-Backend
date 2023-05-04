@@ -29,3 +29,13 @@ def getReviewForSite(sitename: str):
             review_for_site.append(x)
     return review_for_site
 
+@app.get("/reviews/sentiment/{sitename}")
+def getSentimentForSite():
+    default = 0
+    if default > 0:
+        return {"message": "positve"}
+    elif default < 0:
+        return {"message": "negative"}
+    else:
+        return {"message": "neutral"}
+
