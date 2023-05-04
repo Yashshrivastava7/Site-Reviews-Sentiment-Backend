@@ -1,14 +1,19 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 
 app = FastAPI()
 
-reviews = ["Hello" , "World!"]
+class Review(BaseModel):
+    sitename: str
+    review: str
+    
+reviews = []
 @app.get("/")
 def root():
     return {"Server running!"}
 
 @app.post("/reviews")
-def addReviews(review_data):
+def addReviews(review_data: Review):
     reviews.append(review_data)
     return {"message" : "Review added successfully"}
 
