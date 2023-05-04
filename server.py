@@ -20,3 +20,12 @@ def addReviews(review_data: Review):
 @app.get("/reviews")
 def getReviews():
     return reviews
+
+@app.get("/reviews/{sitename}")
+def getReviewForSite(sitename: str):
+    review_for_site = []
+    for x in reviews:
+        if x.sitename == sitename:
+            review_for_site.append(x)
+    return review_for_site
+
