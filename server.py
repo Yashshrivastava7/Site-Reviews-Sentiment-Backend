@@ -21,13 +21,18 @@ def root():
 
 @app.post("/reviews")
 def addReviews(review_data: Review):
-    ids = reviews_collection.insert_one(review_data)
+    data_to_insert = {
+        "sitename": review_data.sitename,
+        "review": review_data.review
+    }
+    ids = reviews_collection.insert_one(data_to_insert)
     return {"message" : "Review added successfully"}
 
 @app.get("/reviews")
 def getAllReviews():
     reviews = reviews_collection.find()
-    return reviews
+    response = [[r["sitename"], r["review"]] for r in reviews]
+    return response
 
 @app.get("/reviews/{sitename}")
 def getReviewForSite(sitename: str):
@@ -40,7 +45,7 @@ def getReviewForSite(sitename: str):
 data = {
         "sitename": "hello.com",
         "review": "Trash"
-    }
+}
 
 @app.get("/test")
 def test():
