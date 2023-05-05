@@ -4,28 +4,28 @@ from pymongo import MongoClient
 
 app = FastAPI()
 
-MONGO_URI = ""
+MONGO_URI = "mongodb+srv://yashnode:<>@cluster0.jnmzzaw.mongodb.net/?retryWrites=true&w=majority"
 client = MongoClient(MONGO_URI)
-db = client.get_default_database()
-reviews_collection = db.get_collection("reviews")
+db = client["Final-Project"]
+reviews_collection = db["reviews"]
 
 class Review(BaseModel):
     sitename: str
     review: str
     
-reviews = []
-
 @app.get("/")
 def root():
-    return {"Server running!"}
+    collections = db.list_collection_names()
+    return {collections}
 
 @app.post("/reviews")
 def addReviews(review_data: Review):
-    reviews.append(review_data)
+    reviews_collection.insert_one(review_data)
     return {"message" : "Review added successfully"}
 
 @app.get("/reviews")
 def getReviews():
+    reviews = reviews_collection.find()
     return reviews
 
 @app.get("/reviews/{sitename}")
