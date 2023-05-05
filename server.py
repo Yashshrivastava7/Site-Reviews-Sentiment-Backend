@@ -1,13 +1,20 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from pymongo import MongoCLient
 
 app = FastAPI()
+
+MONGO_URI = ""
+client = MongoCLient(MONGO_URI)
+db = client.get_default_database()
+reviews_collection = db.get_collection("reviews")
 
 class Review(BaseModel):
     sitename: str
     review: str
     
 reviews = []
+
 @app.get("/")
 def root():
     return {"Server running!"}
