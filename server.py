@@ -25,7 +25,7 @@ def addReviews(review_data: Review):
     return {"message" : "Review added successfully"}
 
 @app.get("/reviews")
-def getReviews():
+def getAllReviews():
     reviews = reviews_collection.find()
     return reviews
 
