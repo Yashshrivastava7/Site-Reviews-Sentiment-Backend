@@ -1,11 +1,11 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from pymongo import MongoCLient
+from pymongo import MongoClient
 
 app = FastAPI()
 
 MONGO_URI = ""
-client = MongoCLient(MONGO_URI)
+client = MongoClient(MONGO_URI)
 db = client.get_default_database()
 reviews_collection = db.get_collection("reviews")
 
