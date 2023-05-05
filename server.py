@@ -1,11 +1,12 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from pymongo import MongoClient
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
 
 app = FastAPI()
 
-MONGO_URI = "mongodb+srv://yashnode:<>@cluster0.jnmzzaw.mongodb.net/?retryWrites=true&w=majority"
-client = MongoClient(MONGO_URI)
+uri = "mongodb+srv://yashnode:yashnodejs7@cluster0.jnmzzaw.mongodb.net/?retryWrites=true&w=majority"
+client = MongoClient(uri, server_api=ServerApi('1'))
 db = client["Final-Project"]
 reviews_collection = db["reviews"]
 
@@ -16,7 +17,7 @@ class Review(BaseModel):
 @app.get("/")
 def root():
     collections = db.list_collection_names()
-    return {collections}
+    return collections 
 
 @app.post("/reviews")
 def addReviews(review_data: Review):
@@ -35,6 +36,15 @@ def getReviewForSite(sitename: str):
         if x.sitename == sitename:
             review_for_site.append(x)
     return review_for_site
+
+data = {
+        "sitename": "hello.com",
+        "review": "Trash"
+    }
+@app.get("/test")
+def test():
+    reviews_collection.insert_one(data)
+    return {"message": "success!"}
 
 @app.get("/reviews/sentiment/{sitename}")
 def getSentimentForSite():
