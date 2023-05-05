@@ -21,7 +21,7 @@ def root():
 
 @app.post("/reviews")
 def addReviews(review_data: Review):
-    reviews_collection.insert_one(review_data)
+    ids = reviews_collection.insert_one(review_data)
     return {"message" : "Review added successfully"}
 
 @app.get("/reviews")
@@ -41,6 +41,7 @@ data = {
         "sitename": "hello.com",
         "review": "Trash"
     }
+
 @app.get("/test")
 def test():
     reviews_collection.insert_one(data)
