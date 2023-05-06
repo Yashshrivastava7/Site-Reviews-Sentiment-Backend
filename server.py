@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from textblob import TextBlob
 from pydantic import BaseModel
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
@@ -19,6 +20,12 @@ def root():
     collections = db.list_collection_names()
     return collections 
 
+@app.post("/test/sentiment")
+def getSentiment(review: str):
+    blob = TextBlob(review)
+    polarity = blob.sentiment.polarity
+    return polarity
+    
 @app.post("/reviews")
 def addReviews(review_data: Review):
     data_to_insert = {
