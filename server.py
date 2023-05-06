@@ -36,11 +36,13 @@ def getAllReviews():
 
 @app.get("/reviews/{sitename}")
 def getReviewForSite(sitename: str):
-    review_for_site = []
-    for x in reviews:
-        if x.sitename == sitename:
-            review_for_site.append(x)
-    return review_for_site
+    data_to_retrieve = {
+            "sitename": sitename  
+    }
+    result = reviews_collection.find(data_to_retrieve)
+    print(result)
+    response = [[r["sitename"],r["review"]] for r in result]
+    return response
 
 data = {
         "sitename": "hello.com",
@@ -56,9 +58,9 @@ def test():
 def getSentimentForSite():
     default = 0
     if default > 0:
-        return {"message": "positve"}
+        return {"message": "positve", "score": str(default)}
     elif default < 0:
-        return {"message": "negative"}
+        return {"message": "negative", "score": str(default)}
     else:
-        return {"message": "neutral"}
+        return {"message": "neutral", "score": str(default)}
 
