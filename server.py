@@ -61,9 +61,24 @@ def test():
     reviews_collection.insert_one(data)
     return {"message": "success!"}
 
+def findSentiment(response):
+    answer = 0
+    iteration = 0
+    for r in response :
+        iteration += 1
+        blob = TextBlob(r[1])
+        polarity = blob.sentiment.polarity
+        answer += polarity
+    return (answer/iteration)
+
 @app.get("/reviews/sentiment/{sitename}")
-def getSentimentForSite():
-    default = 0
+def getSentimentForSite(sitename: str):
+    data_to_retrieve = {
+            "sitename": sitename  
+    }
+    result = reviews_collection.find(data_to_retrieve)
+    response = [[r["sitename"],r["review"]] for r in result]
+    default = findSentiment(response)
     if default > 0:
         return {"message": "positve", "score": str(default)}
     elif default < 0:
