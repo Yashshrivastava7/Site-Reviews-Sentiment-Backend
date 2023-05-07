@@ -21,8 +21,8 @@ def root():
     return collections 
 
 @app.post("/test/sentiment")
-def getSentiment(review: str):
-    blob = TextBlob(review)
+def getSentiment(review_data: Review):
+    blob = TextBlob(review_data.review)
     polarity = blob.sentiment.polarity
     return polarity
     
