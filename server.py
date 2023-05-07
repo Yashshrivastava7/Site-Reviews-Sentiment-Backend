@@ -56,8 +56,12 @@ data = {
         "review": "Trash"
 }
 
-@app.get("/test")
-def test():
+@app.get("/test/{sitename}/{review}")
+def test(sitename: str, review: str):
+    data = {
+        "sitename": sitename,
+        "review": review
+    }
     reviews_collection.insert_one(data)
     return {"message": "success!"}
 
