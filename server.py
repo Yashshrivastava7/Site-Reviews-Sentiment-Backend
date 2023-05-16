@@ -3,8 +3,16 @@ from textblob import TextBlob
 from pydantic import BaseModel
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
-
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 uri = "mongodb+srv://yashnode:yashnodejs7@cluster0.jnmzzaw.mongodb.net/?retryWrites=true&w=majority"
 client = MongoClient(uri, server_api=ServerApi('1'))
@@ -17,6 +25,7 @@ class Review(BaseModel):
     
 @app.get("/")
 def root():
+    print("Working")
     collections = db.list_collection_names()
     return collections 
 
@@ -28,10 +37,12 @@ def getSentiment(review_data: Review):
     
 @app.post("/reviews")
 def addReviews(review_data: Review):
+    print(review_data)
     data_to_insert = {
         "sitename": review_data.sitename,
         "review": review_data.review
     }
+    print(data_to_insert)
     ids = reviews_collection.insert_one(data_to_insert)
     return {"message" : "Review added successfully"}
 
@@ -47,8 +58,8 @@ def getReviewForSite(sitename: str):
             "sitename": sitename  
     }
     result = reviews_collection.find(data_to_retrieve)
-    print(result)
     response = [[r["sitename"],r["review"]] for r in result]
+    print(response)
     return response
 
 data = {
