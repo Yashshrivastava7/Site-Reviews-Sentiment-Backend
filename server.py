@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from fastapi.middleware.cors import CORSMiddleware
+import math
 app = FastAPI()
 
 app.add_middleware(
@@ -94,10 +95,12 @@ def getSentimentForSite(sitename: str):
     result = reviews_collection.find(data_to_retrieve)
     response = [[r["sitename"],r["review"]] for r in result]
     default = findSentiment(response)
+    default = default * 100
+    default = math.ceil(default) 
     if default > 0:
-        return {"message": "positve", "score": str(default)}
+        return {"sentiment": "positve", "score": str(default)}
     elif default < 0:
-        return {"message": "negative", "score": str(default)}
+        return {"sentiment": "negative", "score": str(default)}
     else:
-        return {"message": "neutral", "score": str(default)}
+        return {"sentiment": "neutral", "score": str(default)}
 
