@@ -98,7 +98,7 @@ def getSentimentForSite(sitename: str):
     default = default * 100
     default = math.ceil(default) 
     if default > 0:
-        return {"sentiment": "positve", "score": str(default)}
+        return {"sentiment": "positive", "score": str(default)}
     elif default < 0:
         return {"sentiment": "negative", "score": str(default)}
     else:
