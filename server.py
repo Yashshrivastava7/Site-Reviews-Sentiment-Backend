@@ -15,7 +15,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-uri = "mongodb+srv://yashnode:yashnodejs7@cluster0.jnmzzaw.mongodb.net/?retryWrites=true&w=majority"
+uri = "mongodb+srv://yashnode:<password>@cluster0.jnmzzaw.mongodb.net/?retryWrites=true&w=majority"
 client = MongoClient(uri, server_api=ServerApi('1'))
 db = client["Final-Project"]
 reviews_collection = db["reviews"]
