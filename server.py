@@ -63,11 +63,6 @@ def getReviewForSite(sitename: str):
     print(response)
     return response
 
-data = {
-        "sitename": "hello.com",
-        "review": "Trash"
-}
-
 @app.get("/test/{sitename}/{review}")
 def test(sitename: str, review: str):
     data = {
